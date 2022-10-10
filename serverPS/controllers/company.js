@@ -24,6 +24,13 @@ export const getCompany = async(req, res) =>{
 }
 // ready 1
 export const loginCompany = async(req,res) => {
+    const QUERY_LOGIN = "";
+    const {email, password} = req.body;
+    try {
+        
+    } catch (err) {
+        console.log(err)
+    }
 
 }
 //
@@ -47,4 +54,4 @@ export const register = async(req, res) =>{
         return res.json({message: message});
     }
 }
-//
+//1
