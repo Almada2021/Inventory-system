@@ -2,6 +2,7 @@ import { ADD_PRODUCT, DELETE_PRODUCT, ALL_PRODUCTS, GET_ONE_PRODUCT} from "../Qu
 import { dbObject } from "../database/connection.database.js";
 //comprove the add variable
 export const addProduct = async(req,res) =>{
+   
     const {name, description, stock, price, create_by, provider} = req.body;
     let message = "";
     try {
@@ -69,11 +70,12 @@ export const updateProduct = async(req,res) =>{
 }
 
 export const getAllProducts = async(req,res) => {
+    console.log(req.body)
     const {id} = req.body;
     try {
         const response = await dbObject(ALL_PRODUCTS,[id]);
         const [rows] = response;
-        res.json(rows);    
+        res.send(rows);    
     } catch (err) {
         const error = new Error("failed to brought data")
         res.json(error.message)
@@ -81,7 +83,7 @@ export const getAllProducts = async(req,res) => {
         return res;
     }
 }   
-export const getSingleProduct = async(req,res) => {
+export const getSingleProduct = async(req,res) => {   
     const {id} = req.params;
     try {
         const response = await dbObject(GET_ONE_PRODUCT,[id]);
@@ -89,7 +91,7 @@ export const getSingleProduct = async(req,res) => {
         if(!rows[0]){
             throw new Error("failed")
         }
-        res.json(rows[0]);
+        return res.json(rows[0]);
     } catch (err) {
         res.status(200).json(err.message)
     }finally{

@@ -13,16 +13,11 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
-import IcecreamIcon from '@mui/icons-material/Icecream';
-const pages = ['productos', 'proveedores', 'clientes'];
-const settings = ['Perfil', 'Usuario', 'Permisos', 'Configuracion'];
-const MobileLink = styled(NavLink)(({theme}) => ({
-    textDecoration: "none",
-    color: "inherit"
-
-}))
+import WidgetsIcon from '@mui/icons-material/Widgets';
+const pages = ['products', 'providers', 'clients', 'Sales'];
+const settings = ['Profile', 'User', 'permissions', 'Settings'];
 function Navbar() {
+    
     const navigate = useNavigate()
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
@@ -45,7 +40,7 @@ function Navbar() {
         <AppBar position="static" sx={{backgroundColor: "#02f"}}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            <IcecreamIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}/>
+            <WidgetsIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}/>
             <Typography
               onClick={(e) => { 
                 console.log("hello")
@@ -66,7 +61,7 @@ function Navbar() {
                 textDecoration: 'none',
               }}
             >
-              Top Cream
+              Gest
             </Typography>
   
             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -107,7 +102,7 @@ function Navbar() {
                 ))}
               </Menu>
             </Box>
-            <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+            <WidgetsIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
             <Typography
               variant="h5"
               noWrap
@@ -124,7 +119,7 @@ function Navbar() {
                 textDecoration: 'none',
               }}
             >
-              Top Cream
+              Gest
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               {pages.map((page) => (
@@ -175,7 +170,12 @@ function Navbar() {
       </AppBar>
     )
 }
+const MobileLink = styled(NavLink)(({theme}) => (
+  {
+  textDecoration: "none",
+  color: theme.palette.primary.main
 
+}))
 export default Navbar
 
 

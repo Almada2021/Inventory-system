@@ -1,8 +1,8 @@
 import React from 'react'
-
+import { GeneralPage } from '../../components/GeneralPage/GeneralPage'
 function IndexPage() {
   return (
-    <div >Index</div>
+    <GeneralPage>Index</GeneralPage>
   )
 }
 
