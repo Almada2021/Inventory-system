@@ -12,9 +12,10 @@ const Background = styled("div")( ( {theme } ) => ({
     overflow: "hidden",
     color: "#000",
     display: "flex",
+    margin: "10px",
     wrap: "wrap",
     height: "30vh",
-    width: "420px",
+    width: "350px",
     [theme.breakpoints.down('md')]: {
         width: "80vw"
     },
@@ -32,7 +33,7 @@ function Product({product = null}) {
         :  
         <Background>
          <div style={{width:"80%"}}>
-                <Typography  variant="h4">
+                <Typography  variant="h4" fontStyle="revert" fontWeight="500">
                     {name.substring(0,50)}
                 </Typography>
                 <Typography variant='subtitle2' sx={{height: "40%"}}>

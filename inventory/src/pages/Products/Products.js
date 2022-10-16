@@ -7,16 +7,14 @@ function Products() {
   const [ products, setProducts ] = useState()
   const fetchProducts =async () => {
     try {
-      const fetche = await axios.get(`http://localhost:8000/products/2`)
+      const fetche = await axios.get(`http://localhost:8000/getproducts/2`)
       if (!products){
-        setProducts(fetche.data)
+        setProducts([...fetche.data])
       }else{
         throw new Error("nothing")
       }
-      
     } catch (error) { 
       return error.message
-      
     }
     
   }
@@ -26,19 +24,19 @@ function Products() {
   },[products])
   return (
     <GeneralPage>
+  
       {products 
-      ? <>
-          <Product product={products}/> 
-          <Product product={products}/> 
-          <Product product={products}/> 
-          <Product product={products}/> 
-          <Product product={products}/> 
-          <Product product={products}/> 
-          <Product product={products}/> 
-          <Product product={products}/> 
-          <Product product={products}/> 
-          <Pagination length={9}/>
-        </>
+        ? 
+          <>
+            <div style={{display: "flex", flexWrap:"wrap", width: "87vw",}}>
+                {
+                  products.map(product => (
+                  <Product product={product}/>
+                  ))
+                }
+            </div>
+            <Pagination length={Math.ceil(products.length / 9)}/> 
+          </>
         : null
       }
     </GeneralPage>

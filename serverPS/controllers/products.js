@@ -70,8 +70,7 @@ export const updateProduct = async(req,res) =>{
 }
 
 export const getAllProducts = async(req,res) => {
-    console.log(req.body)
-    const {id} = req.body;
+    const {id} = req.params;
     try {
         const response = await dbObject(ALL_PRODUCTS,[id]);
         const [rows] = response;
