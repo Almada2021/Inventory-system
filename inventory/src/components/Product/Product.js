@@ -1,9 +1,16 @@
-import React from 'react'
+import React, {useState} from 'react'
+import axios from "axios";
 import { styled } from '@mui/material/styles';
-import { Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
+import {Link, NavLink} from "react-router-dom";
+import {useCustomTheme} from "../../hooks/useCustomTheme/useCustomTheme";
+import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
+import ClearIcon from '@mui/icons-material/Clear';
+import IconButton from '@mui/material/IconButton';
+import Modal from '@mui/material/Modal';
 const Background = styled("div")( ( {theme } ) => ({
     backgroundColor: theme.palette.primary.background,
     borderRadius: "10px",
@@ -14,31 +21,102 @@ const Background = styled("div")( ( {theme } ) => ({
     display: "flex",
     margin: "10px",
     wrap: "wrap",
-    height: "30vh",
+    minHeight: "150px",
+    maxHeight: "500px",
     width: "350px",
     [theme.breakpoints.down('md')]: {
         width: "80vw"
     },
-}))
-const DivPhoto = styled("div")(({theme}) => ({
+
+}));
+const DivPhoto = styled("div")( ({ theme }) => ({
     width: "20%",
     padding: "10px"
     
+}));
+const ProductLink = styled(Link)( ({ theme }) => ({
+    alignItems: "center",
+    color: "inherit",
+    gap: "8px",
+    display: "flex",
+    textDecoration: "none",
+}));
+const style = {
+    borderRadius: "10px",
+    boxShadow: "0 0 12px #333",
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '90vw',
+    height: "90vh",
+    bgcolor: 'background.paper',
+    p: 2,
+};
+const DeleteModalBox = styled(Box)( ( { theme } ) => ({
+    backgroundColor: "#fff",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: "10px",
+    boxShadow: "0 0 12px #333",
+    position: 'absolute',
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "85vw",
+    height: "25vh",
+    padding: "5px",
 }))
-function Product({product = null}) {
-    const { name, description, price, stock } = product
+function Product({product = null, fetchProducts}) {
+    const {id, name, description, price, stock } = product;
+    const [formModal, setFormModal] = useState(false);
+    const [deleteModal, setDeleteModal] = useState(false);
+    const openFormModal = () => setFormModal(true);
+    const closeFormModal = () => setFormModal(false);
+    const openDeleteModal = () => setDeleteModal(true);
+    const closeDeleteModal = () => setDeleteModal(false);
+    const selected = useCustomTheme("primary","third");
+    const deleteProduct = async() => {
+        try {
+            const deleteDb = await axios.delete(`http://localhost:8000/delete/${id}`);
+            closeDeleteModal();
+            fetchProducts();
+            return deleteDb
+
+        } catch (err) {
+            console.error(err)
+        }
+    }
   return (
-    <div title={`Product ${product.name}`}>{!product 
+    <div title={`Product ${product.name}`}>
+        {
+        !product 
         ? null 
         :  
         <Background>
          <div style={{width:"80%"}}>
-                <Typography  variant="h4" fontStyle="revert" fontWeight="500">
-                    {name.substring(0,50)}
+                <Typography  variant="h4" fontStyle="revert" fontWeight="500" color={selected} >
+                    <Stack direction="row" alignItems="center" gap="8px">
+                        <IconButton title='edit product' size="small" onClick={openFormModal}  sx={{borderRadius: "2px",backgrounColor: "#fff", outline: `1px solid ${selected}`, height: "30px", display: "flex", alignItems: "center", justifyContent:"center"}}>
+                            <ModeEditOutlineIcon sx={{color: selected}}/>
+                        </IconButton>
+                        <IconButton title='delete product' size="small" onClick={openDeleteModal} sx={{borderRadius: "2px",backgrounColor: "#fff", outline: `1px solid ${selected}`, height: "30px", display: "flex", alignItems: "center", justifyContent:"center"}}>
+                            <ClearIcon sx={{color: selected}}/>
+                        </IconButton>
+                        <ProductLink to={`./${id}`}>
+
+                            {name.substring(0,7)}
+                            {name.length > 8 ? "..." : null}
+                        </ProductLink>
+                    </Stack>
                 </Typography>
-                <Typography variant='subtitle2' sx={{height: "40%"}}>
-                    {description.substring(0,300)}
-                </Typography>
+                <Stack sx={{minHeight: "80px", maxHeight: "300px"}}>
+                    <Typography variant='paragraph'>
+                        {description.substring(0,100)}
+                    </Typography>
+                </Stack>
                 <Divider textAlign='center' variant="middle">
                     <Box sx={{m:"2"}}>
                         <Stack direction="row" sx={{gap: "10px"}}>
@@ -49,6 +127,7 @@ function Product({product = null}) {
                         </Stack>
                     </Box>
                 </Divider>
+
             </div>
             <DivPhoto>
                 <div >
@@ -63,9 +142,47 @@ function Product({product = null}) {
                     />
                 </div>
             </DivPhoto>
-
+            <Modal
+                open={formModal}
+                onClose={closeFormModal}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >     
+                
+                <Box sx={style}>
+                    <Stack direction="row-reverse">
+                        <IconButton onClick={closeFormModal} size="large">
+                            <ClearIcon />
+                        </IconButton>        
+                    </Stack>
+                        
+                </Box>
+            </Modal>
+            <Modal
+                open={deleteModal}
+                onClose={closeDeleteModal}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <DeleteModalBox>
+                    <Box display="flex" justifyContent="center">
+                        <Typography variant='paragraph' fontSize="18px">
+                            Are you sure do you want delete {name}?
+                        </Typography>
+                    </Box>
+                    <Stack direction="row" justifyContent="center" gap="10px" marginTop="20px">
+                        
+                        <Button onClick={deleteProduct} variant="outlined" color="success">
+                            Of Course!
+                        </Button>
+                        <Button onClick={closeDeleteModal} variant="outlined" color="error">
+                            Cancel
+                        </Button>
+                        
+                    </Stack>
+                </DeleteModalBox>
+            </Modal>
         </Background>
-    
     }</div>
   )
 }

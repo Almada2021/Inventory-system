@@ -8,7 +8,7 @@ function Products() {
   const fetchProducts =async () => {
     try {
       const fetche = await axios.get(`http://localhost:8000/getproducts/2`)
-      if (!products){
+      if (!products || JSON.stringify(products) !== JSON.stringify(fetche.data) ){
         setProducts([...fetche.data])
       }else{
         throw new Error("nothing")
@@ -20,24 +20,25 @@ function Products() {
   }
   useEffect(() => {
     fetchProducts() 
-    console.log(products)
+    console.log("render")
   },[products])
   return (
     <GeneralPage>
   
-      {products 
+      {
+        products !== undefined
         ? 
           <>
-            <div style={{display: "flex", flexWrap:"wrap", width: "87vw",}}>
+            <div style={{display: "flex", flexWrap:"wrap", width: "100vw", justifyContent:"center"}}>
                 {
                   products.map(product => (
-                  <Product product={product}/>
+                  <Product key={product.id} product={product} fetchProducts={fetchProducts}/>
                   ))
                 }
             </div>
             <Pagination length={Math.ceil(products.length / 9)}/> 
           </>
-        : null
+        : <div>you don't have Products or connection database failed</div>
       }
     </GeneralPage>
   )

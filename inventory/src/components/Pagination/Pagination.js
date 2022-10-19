@@ -9,6 +9,7 @@ const Container = styled("div")( ( { theme } ) => ({
     alignItems: "center",
     display: "flex",
     justifyContent: "center",
+    padding: "50px",
     height: "50px",
     width: "100vw",
 }))

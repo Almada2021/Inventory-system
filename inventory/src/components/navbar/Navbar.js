@@ -37,6 +37,7 @@ function Navbar() {
       setAnchorElUser(null);
     };
     return (
+      <>
         <AppBar position="static" sx={{backgroundColor: "#02f"}}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
@@ -166,8 +167,9 @@ function Navbar() {
             </Box>
           </Toolbar>
         </Container>
-        <Outlet/>
       </AppBar>
+      <Outlet/>
+    </>
     )
 }
 const MobileLink = styled(NavLink)(({theme}) => (

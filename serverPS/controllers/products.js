@@ -72,7 +72,7 @@ export const updateProduct = async(req,res) =>{
 export const getAllProducts = async(req,res) => {
     const {id} = req.params;
     try {
-        const response = await dbObject(ALL_PRODUCTS,[id]);
+        const response = await dbObject(ALL_PRODUCTS,[Number(id)]);
         const [rows] = response;
         res.send(rows);    
     } catch (err) {
