@@ -77,7 +77,7 @@ export const getAllProducts = async(req,res) => {
         res.send(rows);    
     } catch (err) {
         const error = new Error("failed to brought data")
-        res.json(error.message)
+        res.json([])
     }finally{
         return res;
     }

@@ -7,11 +7,14 @@ function Products() {
   const [ products, setProducts ] = useState()
   const fetchProducts =async () => {
     try {
-      const fetche = await axios.get(`http://localhost:8000/getproducts/2`)
-      if (!products || JSON.stringify(products) !== JSON.stringify(fetche.data) ){
+      const fetche = await axios.get(`http://localhost:8000/getproducts/3`)
+      console.log(fetche.data)
+      if (!products || JSON.stringify(products) !== JSON.stringify(fetche.data) && fetche.data.length !== 0){
         setProducts([...fetche.data])
       }else{
-        throw new Error("nothing")
+        if(products === undefined){
+          setProducts([])
+        }
       }
     } catch (error) { 
       return error.message
@@ -20,13 +23,12 @@ function Products() {
   }
   useEffect(() => {
     fetchProducts() 
-    console.log("render")
   },[products])
   return (
     <GeneralPage>
   
       {
-        products !== undefined
+        products !== undefined && products.length >= 1
         ? 
           <>
             <div style={{display: "flex", flexWrap:"wrap", width: "100vw", justifyContent:"center"}}>
