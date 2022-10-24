@@ -21,6 +21,7 @@ function ProductInfo() {
   return (
     <GeneralPage>
       ProductInfo
+      
     </GeneralPage>
   )
 }

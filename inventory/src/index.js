@@ -13,7 +13,6 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>  
       <ThemeProvider theme={theme}>
-
         <Router>
           <Routes>
             <Route path="/*" element={<App/>} />
