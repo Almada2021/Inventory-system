@@ -5,11 +5,15 @@ import Product from '../../components/Product/Product'
 import  Pagination  from '../../components/Pagination/Pagination'
 import { ListContainer } from '../../components/ListContainer/ListContainer'
 import WrongList from '../../components/WrongList/WrongList'
+import NavProductsSection from '../../components/NavProductsSection/NavProductsSection'
+import BigModal from '../../components/BigModal/BigModal'
+import CrossButton from '../../components/buttons/CrossButton/CrossButton'
 function Products() {
   const [ products, setProducts ] = useState()
+  const [ addProductModal, setAddProductModal] = useState(false)
   const fetchProducts =async () => {
     try {
-      const fetche = await axios.get(`http://localhost:8000/getproducts/3`)
+      const fetche = await axios.get(`http://localhost:8000/getproducts/2`)
       if (!products || JSON.stringify(products) !== JSON.stringify(fetche.data) && fetche.data.length !== 0){
         setProducts([...fetche.data])
       }else{
@@ -21,7 +25,7 @@ function Products() {
     } catch (error) { 
       return error.message
     }
-    
+  
   }
   useEffect(() => {
     fetchProducts() 
@@ -29,15 +33,21 @@ function Products() {
   },[products, fetchProducts])
   return (
     <GeneralPage>
+      <NavProductsSection modal={addProductModal} setModal={setAddProductModal}/>
+      <BigModal 
+        open={addProductModal} 
+        onclose={() => setAddProductModal(false)} 
+        closeBtn={<CrossButton/>} 
+      />
       {
         products !== undefined && products.length >= 1
         ? 
-          <>
+          <> 
             <ListContainer length={products.length}>
                 {
                   products.map(product => (
-                  <Product key={product.id} product={product} fetchProducts={fetchProducts}/>
-                  ))
+                    <Product key={product.id} product={product} fetchProducts={fetchProducts}/>
+                    ))
                 }
             </ListContainer>
             <Pagination length={Math.ceil(products.length / 9)}/> 

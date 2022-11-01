@@ -19,7 +19,7 @@ const Background = styled("div")( ( {theme } ) => ({
     backgroundColor: theme.palette.primary.background,
     borderRadius: "10px",
     boxSizing: "border-box",
-    padding: "20px",
+    padding: "15px",
     overflow: "hidden",
     color: "#000",
     display: "flex",
@@ -27,9 +27,10 @@ const Background = styled("div")( ( {theme } ) => ({
     wrap: "wrap",
     minHeight: "150px",
     maxHeight: "500px",
-    width: "350px",
-    [theme.breakpoints.down('md')]: {
-        width: "80vw"
+    width: "80vw",
+    [theme.breakpoints.up('md')]: {
+        width: "340px",
+        
     },
     [theme.breakpoints.between('md', 'lg')]: {
         width: "30vw",
@@ -72,9 +73,9 @@ function Product({product = null, fetchProducts}) {
         ? null 
         :  
         <Background>
-         <div style={{width:"80%"}}>
+         <div style={{width:"60%"}}>
                 <Typography  variant="h4" fontStyle="revert" fontWeight="500" color={selected} >
-                    <Stack direction="row" alignItems="center" gap="8px">
+                    <Stack direction="row" alignItems="center" gap="6px" padding="3px">
                         <IconButton title='edit product' size="small" onClick={openFormModal}  sx={{borderRadius: "2px",backgrounColor: "#fff", outline: `1px solid ${selected}`, height: "30px", display: "flex", alignItems: "center", justifyContent:"center"}}>
                             <ModeEditOutlineIcon sx={{color: selected}}/>
                         </IconButton>
@@ -87,19 +88,19 @@ function Product({product = null, fetchProducts}) {
                         </ProductLink>
                     </Stack>
                 </Typography>
-                <Stack sx={{minHeight: "80px", maxHeight: "300px"}}>
+                <Stack sx={{minHeight: "80px", maxHeight: "100px"}}>
                     <Typography variant='paragraph'>
                         {description.substring(0,100)}
                     </Typography>
                 </Stack>
-                <Divider textAlign='center' variant="middle">
+                {/* <Divider textAlign='center' variant="middle">
                     <Box sx={{m:"2"}}>
                         <Stack direction="row" sx={{gap: "10px"}}>
                             <Typography sx={{color: "#0f0", fontWeight: "bold"}} variant="h6">{Number.parseFloat(price).toFixed(2) +"$"}</Typography>
                             <Typography sx={{color: "#0f0", fontWeight: "bold"}} variant="h6">{stock}</Typography>
                         </Stack>
                     </Box>
-                </Divider>
+                </Divider> */}
             </div>
             <PhotoDiv 
                 title={name}
@@ -109,7 +110,7 @@ function Product({product = null, fetchProducts}) {
                 open={formModal}
                 onclose={closeFormModal}
                 closeBtn={<CrossButton size="large" direction="row-reverse" click={closeFormModal}/>}
-                content={<EditProduct/>}
+                content={<EditProduct product={product}/>}
             />
              
             <WarningModal

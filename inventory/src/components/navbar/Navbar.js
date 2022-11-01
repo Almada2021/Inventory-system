@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
-import {  useNavigate, NavLink, Outlet } from "react-router-dom";
+import {  useNavigate, NavLink } from "react-router-dom";
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -38,7 +38,7 @@ function Navbar() {
     };
     return (
       <>
-        <AppBar position="static" sx={{backgroundColor: "#02f"}}>
+        <AppBar position="static" sx={{backgroundColor: "#02f", position: "fixed", zIndex: 500}}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <WidgetsIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}/>
@@ -168,7 +168,6 @@ function Navbar() {
           </Toolbar>
         </Container>
       </AppBar>
-      <Outlet/>
     </>
     )
 }

@@ -19,13 +19,17 @@ const Message = styled(ErrorMessage)( ( {theme}) => ({
   color: theme.palette.primary.third,
   fontWeight: "lighter",
 }))
-function EditProduct() {
+function EditProduct({product}) {
+    const {name} = product
     const color = useCustomTheme("primary", "secondary")
     return (
     <>
       <Stack direction="column" >
-          <Typography variant='h4' fontWeight="bold" color={color}>
-              EditProduct
+          <Typography variant='h4' fontWeight="bold" color={color} textAlign="center">
+              Edit Product
+          </Typography>            
+          <Typography variant='h6' fontWeight="lighter" color={color} textAlign="center">
+              {name}
           </Typography>            
           <Formik
           initialValues={{ email: '', password: '' }}
