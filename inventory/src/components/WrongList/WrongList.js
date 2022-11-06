@@ -1,8 +1,9 @@
+import { Box } from '@mui/material'
 import React from 'react'
 
 function WrongList() {
   return (
-    <div>WrongList</div>
+    <Box>WrongList</Box>
   )
 }
 

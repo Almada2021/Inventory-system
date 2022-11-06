@@ -11,6 +11,7 @@ import CrossButton from '../../components/buttons/CrossButton/CrossButton'
 function Products() {
   const [ products, setProducts ] = useState()
   const [ addProductModal, setAddProductModal] = useState(false)
+  const closeAddProductModal = () => setAddProductModal(false);
   const fetchProducts =async () => {
     try {
       const fetche = await axios.get(`http://localhost:8000/getproducts/2`)
@@ -29,15 +30,21 @@ function Products() {
   }
   useEffect(() => {
     fetchProducts() 
-    console.log("render")
   },[products, fetchProducts])
   return (
     <GeneralPage>
       <NavProductsSection modal={addProductModal} setModal={setAddProductModal}/>
       <BigModal 
         open={addProductModal} 
-        onclose={() => setAddProductModal(false)} 
-        closeBtn={<CrossButton/>} 
+        onclose={closeAddProductModal} 
+        closeBtn={
+          <CrossButton
+            size="medium"
+            direction="row-reverse"
+            click={closeAddProductModal}
+          />
+        } 
+        content={null}
       />
       {
         products !== undefined && products.length >= 1
@@ -52,7 +59,8 @@ function Products() {
             </ListContainer>
             <Pagination length={Math.ceil(products.length / 9)}/> 
           </>
-        : <WrongList></WrongList>
+        :
+        <WrongList></WrongList>
       }
     </GeneralPage>
   )

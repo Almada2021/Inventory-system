@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {useSelector} from "react-redux";
 import { styled } from '@mui/material/styles';
 import {  useNavigate, NavLink } from "react-router-dom";
 import AppBar from '@mui/material/AppBar';
@@ -15,9 +16,9 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import WidgetsIcon from '@mui/icons-material/Widgets';
 const pages = ['products', 'providers', 'clients', 'Sales'];
-const settings = ['Profile', 'User', 'permissions', 'Settings'];
+const settings = ['Profile', 'User',  'Settings', 'Sign Out'];
 function Navbar() {
-    
+    const {userName} = useSelector((state) => state.auth)    
     const navigate = useNavigate()
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
@@ -91,7 +92,7 @@ function Navbar() {
                 open={Boolean(anchorElNav)}
                 onClose={handleCloseNavMenu}
                 sx={{
-                  display: { xs: 'block', md: 'none' },
+                  display: { xs: 'block', md: 'none',  },
                 }}
               >
                 {pages.map((page) => (
@@ -139,21 +140,25 @@ function Navbar() {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <Avatar alt={userName} src="/static/images/avatar/2" />
                 </IconButton>
               </Tooltip>
               <Menu
-                sx={{ mt: '45px' }}
+                sx={{ 
+                  mt: '45px',
+                }}
                 id="menu-appbar"
                 anchorEl={anchorElUser}
                 anchorOrigin={{
                   vertical: 'top',
                   horizontal: 'right',
                 }}
+                
                 keepMounted
                 transformOrigin={{
                   vertical: 'top',
                   horizontal: 'right',
+                  width: 0
                 }}
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
