@@ -1,11 +1,14 @@
 import React from 'react'
+import { useGetUserProductsQuery } from '../../app/api/apiSlice'
 import { GeneralPage } from '../../components/GeneralPage/GeneralPage'
-import {useSelector} from "react-redux"
+
 function IndexPage() {
-  const user = useSelector((state) => state.auth)
-  console.log(user)
+  const {data, error, isLoading}= useGetUserProductsQuery(2)
+  console.log(data)
+  let content = data
   return (
-    <GeneralPage>Index</GeneralPage>
+  
+    <GeneralPage>{isLoading === false ? JSON.stringify(data, null, /\n/) : "no" }</GeneralPage>
   )
 }
 

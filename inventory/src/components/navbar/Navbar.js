@@ -18,7 +18,7 @@ import WidgetsIcon from '@mui/icons-material/Widgets';
 const pages = ['products', 'providers', 'clients', 'Sales'];
 const settings = ['Profile', 'User',  'Settings', 'Sign Out'];
 function Navbar() {
-    const {userName} = useSelector((state) => state.auth)    
+    // const {userName} = useSelector((state) => state.auth)    
     const navigate = useNavigate()
     const [anchorElNav, setAnchorElNav] = useState(null);
     const [anchorElUser, setAnchorElUser] = useState(null);
@@ -140,7 +140,7 @@ function Navbar() {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt={userName} src="/static/images/avatar/2" />
+                  <Avatar alt={"windows"} src="/static/images/avatar/2" />
                 </IconButton>
               </Tooltip>
               <Menu

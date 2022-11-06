@@ -1,13 +1,13 @@
 import {configureStore} from "@reduxjs/toolkit";
-import auth from "../auth/authSlice";
-import products from "../products/productSlice";
-function neon (){
-
-}
-const store = configureStore({
-    reducer:  {
-        auth,
-        products,
-    }
+import { apiSlice } from "../api/apiSlice";
+import { setupListeners } from '@reduxjs/toolkit/query'
+export const store = configureStore({
+    reducer: {
+        // n : () => { return 0},
+        [apiSlice.reducerPath]: apiSlice.reducer,
+    },
+    middleware: (getDefaultMiddleware) => (getDefaultMiddleware().concat(apiSlice.middleware)),
+    
 })
-export default store
+setupListeners(store.dispatch)
+//auth slice and product slice file
