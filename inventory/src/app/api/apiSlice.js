@@ -8,7 +8,15 @@ export const apiSlice = createApi({
           query: (id) => `/getproducts/${id}`,
           providesTags: ['product']
         }),
-     
+        postUserProduct: builder.mutation({
+          query: (value) => ({
+              url: '/add',
+              method: 'POST',
+              body: value
+          }),
+          invalidatesTags: ['product'],
+        })
+        ,
         deleteUserProduct: builder.mutation({
           query: (id) => ({
             url: `/delete/${id}`,
@@ -24,4 +32,9 @@ export const apiSlice = createApi({
         })
     }),
 })
-export const { useGetUserProductsQuery, useDeleteUserProductMutation, useGetUserProvidersQuery} = apiSlice
+export const { 
+  useGetUserProductsQuery, 
+  useDeleteUserProductMutation,
+  useGetUserProvidersQuery,
+  usePostUserProductMutation
+} = apiSlice

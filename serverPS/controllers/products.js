@@ -2,7 +2,6 @@ import { ADD_PRODUCT, DELETE_PRODUCT, ALL_PRODUCTS, GET_ONE_PRODUCT} from "../Qu
 import { dbObject } from "../database/connection.database.js";
 //comprove the add variable
 export const addProduct = async(req,res) =>{
-   
     const {name, description, stock, price, create_by, provider} = req.body;
     let message = "";
     try {

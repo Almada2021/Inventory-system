@@ -4,37 +4,71 @@ import Button from '@mui/material/Button';
 import ImageIcon from '@mui/icons-material/Image';
 //need delete formik an yup because not supports file
 // import { Formik, useFormik, Field } from "formik";
+/* el esquema necesita un cambio debido a que el objeto provider no puede acceder a su id */
 import TextField from '@mui/material/TextField/TextField';
 import changeReducerFunction from '../../features/forms/changeReducerFunctions';
 import { productsInitialFields, productsReducer } from '../../features/schema/productSchema/productSchema';
 import { styled } from '@mui/material/styles';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
-import { useGetUserProvidersQuery } from '../../app/api/apiSlice';
-const FormContainer = styled("form")({
+import { useGetUserProvidersQuery, usePostUserProductMutation } from '../../app/api/apiSlice';
+const FormContainer = styled("form")(({theme}) =>({
   display: "flex",
   flexDirection: "column",
   gap: "5px",
-});
-const ButtonContainers = styled(Box)({
+  [theme.breakpoints.up("md")]: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+  }
+}));
+const ButtonContainers = styled(Box)(({theme}) =>({
   display: "flex",
   gap: "10px",
-});
+  [theme.breakpoints.up("md")]:{
+    width: "70%",
+  }
+}));
+const TextFieldComponent = styled(TextField)(({theme}) => ({
+  [theme.breakpoints.up("md")]:{
+    width: "40vw"
+  },
+  [theme.breakpoints.up("lg")]:{
+    width: "30vw"
+  }
+}))
 function AddProductContent() {
   const [values, dispatch] = useReducer(productsReducer, productsInitialFields)
   const uploadInputRef = useRef(null);
   const { name, description, price, stock, provider } = values
-  const {data, error, isLoading} = useGetUserProvidersQuery(1)
+  const {data, error, isLoading} = useGetUserProvidersQuery(1);
+  const [postProduct] =usePostUserProductMutation();
+  const handleSubmitProducts = async(e) => {
+    e.preventDefault()
+    try {
+      const obj = {
+        name,
+        description,
+        stock,
+        price,
+        create_by: 2,
+        provider: 2,
+      }
+      const response = await postProduct(obj)
+    } catch (error) {
+    }
+    
+  }
   return (
     <Box>
-      <FormContainer>
+      <FormContainer onSubmit={handleSubmitProducts}>
 
-        <TextField 
+        <TextFieldComponent 
           value={name} 
           onChange={(e) => changeReducerFunction(dispatch, e, "NAME")}
+          
           placeholder="insert product name"
         />
         
-        <TextField 
+        <TextFieldComponent 
           value={description} 
           multiline
           rows={4}
@@ -42,18 +76,18 @@ function AddProductContent() {
           placeholder="insert product description"
         />
 
-        <TextField 
+        <TextFieldComponent 
           value={price} 
           onChange={(e) => changeReducerFunction(dispatch, e, "PRICE")}
           placeholder="insert product price"
         />
-        <TextField 
+        <TextFieldComponent 
           value={stock} 
           onChange={(e) => changeReducerFunction(dispatch, e, "STOCK")}
           placeholder="insert product stock"
         />
 
-        <Box sx={{ minWidth: 120,  }}>
+        <Box sx={{ width: "69%",  boxSizing:"border-box"}}>
           <FormControl fullWidth>
             <InputLabel  
               id="provider-label"
@@ -66,7 +100,7 @@ function AddProductContent() {
               label="Provider"
               onChange={(e) => changeReducerFunction(dispatch, e, "PROVIDER")}
               >
-                {data.length !== undefined
+                {data?.length !== undefined
                   ?
                     data.map((element) => (
                       <MenuItem value={element}>{element.name}</MenuItem>
@@ -94,7 +128,7 @@ function AddProductContent() {
                 <ImageIcon/>
               </Button>
           </label> 
-          <Button variant='outlined' sx={{width: "80%"}}>Submit</Button>
+          <Button type="submit" variant='outlined' sx={{width: "80%"}}>Submit</Button>
         </ButtonContainers>
       </FormContainer>
 

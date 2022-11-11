@@ -8,5 +8,5 @@ export const ALL_PRODUCTS = "SELECT  products.id , products.name, products.descr
 //Provider
 export const ADD_PROVIDER = "INSERT INTO provider(name, phone, created_by) VALUES( ? , ? , ? )";
 export const DELETE_PROVIDER = "DELETE FROM provider WHERE id=?";
-export const ALL_PROVIDERS_USER = "SELECT  provider.name, provider.phone FROM provider where provider.created_by=?;"
+export const ALL_PROVIDERS_USER = "SELECT provider.id, provider.name, provider.phone FROM provider where provider.created_by=?;"
 
