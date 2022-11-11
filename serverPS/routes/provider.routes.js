@@ -1,7 +1,8 @@
 import {Router} from "express";
-import { addProvider, deleteProvider } from "../controllers/provider.js";
+import { addProvider, deleteProvider, getAllProvider } from "../controllers/provider.js";
 const router = Router();
 
-router.post('/add/provider', addProvider );
-router.delete('/delete/provider/:id', deleteProvider );
+router.post('/add/providers', addProvider );
+router.get('/get/providers/:id', getAllProvider );
+router.delete('/delete/providers/:id', deleteProvider );
 export default router;

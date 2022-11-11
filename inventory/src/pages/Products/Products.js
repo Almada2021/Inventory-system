@@ -1,36 +1,26 @@
-import React, { useState, useEffect } from 'react'
-import {GeneralPage} from "../../components/GeneralPage/GeneralPage"
-import axios from "axios"
-import Product from '../../components/Product/Product'
-import  Pagination  from '../../components/Pagination/Pagination'
-import { ListContainer } from '../../components/ListContainer/ListContainer'
-import WrongList from '../../components/WrongList/WrongList'
-import NavProductsSection from '../../components/NavProductsSection/NavProductsSection'
-import BigModal from '../../components/BigModal/BigModal'
-import CrossButton from '../../components/buttons/CrossButton/CrossButton'
+import React, { useState } from 'react';
+import {GeneralPage} from "../../components/GeneralPage/GeneralPage";
+import Product from '../../components/Product/Product';
+import  Pagination  from '../../components/Pagination/Pagination';
+import { ListContainer } from '../../components/ListContainer/ListContainer';
+import WrongList from '../../components/WrongList/WrongList';
+import NavProductsSection from '../../components/NavProductsSection/NavProductsSection';
+import BigModal from '../../components/BigModal/BigModal';
+import CrossButton from '../../components/buttons/CrossButton/CrossButton';
+import { useGetUserProductsQuery } from '../../app/api/apiSlice';
+import AddProductContent from '../../components/AddProductContent/AddProductContent';
 function Products() {
-  const [ products, setProducts ] = useState()
   const [ addProductModal, setAddProductModal] = useState(false)
   const closeAddProductModal = () => setAddProductModal(false);
-  const fetchProducts =async () => {
-    try {
-      const fetche = await axios.get(`http://localhost:8000/getproducts/2`)
-      if (!products || JSON.stringify(products) !== JSON.stringify(fetche.data) && fetche.data.length !== 0){
-        setProducts([...fetche.data])
-      }else{
-        if(products === undefined || products.length === 0){
-          setProducts([])
-        }
-        
-      }
-    } catch (error) { 
-      return error.message
-    }
-  
-  }
-  useEffect(() => {
-    fetchProducts() 
-  },[products, fetchProducts])
+  const {data, error, isLoading}= useGetUserProductsQuery(2)
+  const products = data
+
+  const canLoad = [
+    typeof error == 'undefined', 
+    isLoading !== true,
+    products?.length > 0,
+  ]
+    .every(Boolean)
   return (
     <GeneralPage>
       <NavProductsSection modal={addProductModal} setModal={setAddProductModal}/>
@@ -44,16 +34,16 @@ function Products() {
             click={closeAddProductModal}
           />
         } 
-        content={null}
+        content={<AddProductContent/>}
       />
       {
-        products !== undefined && products.length >= 1
+        canLoad
         ? 
           <> 
             <ListContainer length={products.length}>
                 {
                   products.map(product => (
-                    <Product key={product.id} product={product} fetchProducts={fetchProducts}/>
+                    <Product key={product.id} product={product} />
                     ))
                 }
             </ListContainer>

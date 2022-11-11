@@ -1,8 +1,7 @@
 import { dbObject } from "../database/connection.database.js";
-import { ADD_PROVIDER, DELETE_PROVIDER } from "../Query/index.js";
+import { ADD_PROVIDER, DELETE_PROVIDER, ALL_PROVIDERS_USER } from "../Query/index.js";
 
 export const addProvider = async (req,res) =>{
-    console.log(req.body)
     const {
         name,
         phone,
@@ -30,5 +29,18 @@ export const deleteProvider = async (req,res) => {
     }
     finally{
         return res.json(message)
+    }
+};
+export const getAllProvider = async (req, res) => {
+    try {
+        const {id} = req.params
+        const response = await dbObject( ALL_PROVIDERS_USER ,[id])
+        const [rows] = response
+        if (rows.length === 0){
+            throw new Error("don't have providers")
+        }
+        return res.json(rows)
+    } catch (error) {
+        return res.json("error or don't have providers")
     }
 }

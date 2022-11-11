@@ -12,6 +12,7 @@ const Container = styled("div")( ( { theme } ) => ({
     padding: "50px",
     height: "50px",
     width: "100vw",
+    overflow: "hidden",
 }))
 
 

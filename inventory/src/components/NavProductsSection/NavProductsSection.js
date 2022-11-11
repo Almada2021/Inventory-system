@@ -12,7 +12,8 @@ const Container = styled(Box)( ({theme}) => ({
     top: "75%",
     margin: "0 auto",
     [theme.breakpoints.up("md")]:{
-        display: "none",
+        left: "90%",
+        // display: "none",        
     },
     ['&:active']: {
         boxShadow: "none"
