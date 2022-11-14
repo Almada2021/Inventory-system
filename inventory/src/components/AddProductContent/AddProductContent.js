@@ -1,4 +1,4 @@
-import {useReducer, useRef} from 'react'
+import {useReducer, useRef, useState} from 'react'
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import ImageIcon from '@mui/icons-material/Image';
@@ -11,20 +11,27 @@ import { productsInitialFields, productsReducer } from '../../features/schema/pr
 import { styled } from '@mui/material/styles';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useGetUserProvidersQuery, usePostUserProductMutation } from '../../app/api/apiSlice';
+import { width } from '@mui/system';
+import NormalField from '../FormsComponents/Fields/NormalField/NormalField';
 const FormContainer = styled("form")(({theme}) =>({
   display: "flex",
   flexDirection: "column",
   gap: "5px",
+
   [theme.breakpoints.up("md")]: {
     flexDirection: "row",
     flexWrap: "wrap",
+    alignItems: "start",
+    justifyContent: "center",
   }
 }));
 const ButtonContainers = styled(Box)(({theme}) =>({
   display: "flex",
+  justifyContent: "center",
   gap: "10px",
   [theme.breakpoints.up("md")]:{
-    width: "70%",
+    marginTop: "15px",
+    width: "40vw",
   }
 }));
 const TextFieldComponent = styled(TextField)(({theme}) => ({
@@ -35,15 +42,30 @@ const TextFieldComponent = styled(TextField)(({theme}) => ({
     width: "30vw"
   }
 }))
-function AddProductContent() {
+const SubmitButton = styled(Button)(({theme}) => ({
+  width: "80%",
+  [theme.breakpoints.up("md")]: {
+    width: "40%"
+  }
+}))
+function AddProductContent({close}) {
   const [values, dispatch] = useReducer(productsReducer, productsInitialFields)
   const uploadInputRef = useRef(null);
-  const { name, description, price, stock, provider } = values
+  const { name, description, price, stock, provider, errorForm } = values
   const {data, error, isLoading} = useGetUserProvidersQuery(1);
   const [postProduct] =usePostUserProductMutation();
+  const [image, setImage] = useState()
+  const previewImg = (event) => {
+    console.log(event.target.files)
+    if (event.target.files && event.target.files[0]) {
+        setImage( URL.createObjectURL(event.target.files[0]))
+        return uploadInputRef.current = URL.createObjectURL(event.target.files[0])
+      }
+  }
   const handleSubmitProducts = async(e) => {
     e.preventDefault()
     try {
+
       const obj = {
         name,
         description,
@@ -53,34 +75,44 @@ function AddProductContent() {
         provider: 2,
       }
       const response = await postProduct(obj)
+      close()
     } catch (error) {
     }
     
   }
+  console.log(uploadInputRef.current)
   return (
-    <Box>
-      <FormContainer onSubmit={handleSubmitProducts}>
-
-        <TextFieldComponent 
-          value={name} 
-          onChange={(e) => changeReducerFunction(dispatch, e, "NAME")}
-          
+    <Box alignItems="center" display="flex" flexDirection="column"> 
+        {uploadInputRef.current !== undefined 
+          ? 
+          <Box width="60vw" marginBottom="5px" height="150px" overflow="hidden" color="#fff">
+            <img src={image} style={{objectFit: "cover", width: "inherit", height: "inherit"}}></img> 
+          </Box>
+          : null
+        }
+      <FormContainer onSubmit={handleSubmitProducts}>       
+        <NormalField
+          value={name}
+          forLabelId="name-field"
+          change={(e) => changeReducerFunction(dispatch, e, "NAME")}
+          errorText={errorForm}
           placeholder="insert product name"
         />
+        
         
         <TextFieldComponent 
           value={description} 
           multiline
-          rows={4}
+          rows={1}
           onChange={(e) => changeReducerFunction(dispatch, e, "DESCRIPTION")}
           placeholder="insert product description"
         />
-
         <TextFieldComponent 
           value={price} 
           onChange={(e) => changeReducerFunction(dispatch, e, "PRICE")}
           placeholder="insert product price"
         />
+
         <TextFieldComponent 
           value={stock} 
           onChange={(e) => changeReducerFunction(dispatch, e, "STOCK")}
@@ -91,7 +123,6 @@ function AddProductContent() {
           <FormControl fullWidth>
             <InputLabel  
               id="provider-label"
-              sx={{}}
             >Provider</InputLabel>
             <Select
               labelId="provider-label"
@@ -100,7 +131,7 @@ function AddProductContent() {
               label="Provider"
               onChange={(e) => changeReducerFunction(dispatch, e, "PROVIDER")}
               >
-                {data?.length !== undefined
+                {!error && isLoading == false && data.length > 0
                   ?
                     data.map((element) => (
                       <MenuItem value={element}>{element.name}</MenuItem>
@@ -120,18 +151,15 @@ function AddProductContent() {
               accept="image/*"
               id="contained-button-file"
               style={{ display: "none" }}
-              // onLoad={loadProviders}
-              onChange={(e) => console.log(e.target.value)}
+              onChange={previewImg}
             />
-
             <Button variant="contained" component="span">
                 <ImageIcon/>
-              </Button>
+            </Button>
           </label> 
-          <Button type="submit" variant='outlined' sx={{width: "80%"}}>Submit</Button>
+          <SubmitButton type="submit" variant='outlined'>Submit</SubmitButton>
         </ButtonContainers>
       </FormContainer>
-
     </Box>
   )
 }

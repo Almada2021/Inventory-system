@@ -7,7 +7,7 @@ import {useCustomTheme} from "../../hooks/useCustomTheme/useCustomTheme";
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import ClearIcon from '@mui/icons-material/Clear';
 import IconButton from '@mui/material/IconButton';
-import PhotoDiv from './PhotoDiv/PhotoDiv';
+import PhotoDiv from '../Product/PhotoDiv/PhotoDiv';
 import CrossButton from '../buttons/CrossButton/CrossButton';
 import WarningModal from '../WarningModal/WarningModal';
 import BigModal from '../BigModal/BigModal';
@@ -44,8 +44,8 @@ const ProductLink = styled(Link)( ({ theme }) => ({
     textDecoration: "none",
 }));
 
-function Product({product = null}) {
-    const {id, name, description, price, stock } = product;
+function ProviderCard({provider = null}) {
+    const {id, name, phone } = provider;
     const [formModal, setFormModal] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
     const openFormModal = () => setFormModal(true);
@@ -65,9 +65,9 @@ function Product({product = null}) {
         }
     }
     return (
-        <div title={`Product ${product.name}`}>
+        <div title={`Product ${provider.name}`}>
             {
-                !product && product.length === undefined
+                !provider && provider.length === undefined
                 ? null 
                 :  
                 <Background>
@@ -88,7 +88,7 @@ function Product({product = null}) {
                         </Typography>
                         <Stack sx={{minHeight: "80px", maxHeight: "100px"}}>
                             <Typography variant='paragraph'>
-                                {description.substring(0,100)}
+                                {phone.substring(0,100)}
                             </Typography>
                         </Stack>
                     </div>
@@ -100,7 +100,7 @@ function Product({product = null}) {
                         open={formModal}
                         onclose={closeFormModal}
                         closeBtn={<CrossButton size="large" direction="row-reverse" click={closeFormModal}/>}
-                        content={<EditProduct product={product}/>}
+                        content={<EditProduct product={provider}/>}
                     />
 
                     <WarningModal
@@ -115,4 +115,4 @@ function Product({product = null}) {
   ) 
 }   
 
-export default Product
+export default ProviderCard

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {GeneralPage} from "../../components/GeneralPage/GeneralPage";
 import Product from '../../components/Product/Product';
 import  Pagination  from '../../components/Pagination/Pagination';
@@ -34,7 +34,7 @@ function Products() {
             click={closeAddProductModal}
           />
         } 
-        content={<AddProductContent/>}
+        content={<AddProductContent close={closeAddProductModal}/>}
       />
       {
         canLoad
@@ -50,7 +50,7 @@ function Products() {
             <Pagination length={Math.ceil(products.length / 9)}/> 
           </>
         :
-        <WrongList></WrongList>
+        <WrongList isLoading={isLoading} error={error}></WrongList>
       }
     </GeneralPage>
   )
