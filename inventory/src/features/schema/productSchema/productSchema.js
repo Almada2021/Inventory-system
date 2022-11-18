@@ -4,8 +4,20 @@ export const productsInitialFields = {
     price: "",
     stock: "",
     provider:"",
-    errorForm: "",
+    errorForm: {
+      errorName: "",
+      description: "",
+      errorPrice: "",
+      errorStock: "",
+      provider: "",
+    },
 }
+const message = {
+  name: "you need 4 letters",
+  price: "you need a price",
+}
+const priceRegex = /^(.*?)[0-9]/;
+const letters = /^(.*?)[aA-zZ]/
 export const productsReducer = (state,action) =>{
     if (action.value === undefined){
       return state
@@ -13,18 +25,40 @@ export const productsReducer = (state,action) =>{
     switch(action.type){
       case "NAME":
         if (action.value.length < 4){
-          return {...state, name: action.value, errorForm: "you need 4 letters"};          
+          return {...state, name: action.value, errorForm: {...state.errorForm, errorName: message.name}};          
         }
-        return {...state, name: action.value, errorForm: ""};
+        return {...state, name: action.value, errorForm: {...state.errorForm, errorName: ""}};
 
       case "DESCRIPTION":
         return {...state, description: action.value};
+      
       case "PRICE":
-        return {...state, price: action.value};
+        if(action.value === ""){
+          return {...state, price: action.value, errorForm: {...state.errorForm, errorPrice: ""}};          
+        }
+        if(letters.test(action.value) === true){
+          return {...state}
+        }
+        if(priceRegex.test(action.value) === false){
+          return {...state, errorForm: {...state.errorForm, errorPrice: message.price}}
+        }
+        return {...state, price: action.value, errorForm: {...state.errorForm, errorPrice: ""}};
+
       case "STOCK":
-        return {...state, stock: action.value};
+        if(action.value === ""){
+          return {...state, price: action.value, errorForm: {...state.errorForm, errorPrice: ""}};          
+        }
+        if(letters.test(action.value) === true){
+          return {...state}
+        }
+        if(priceRegex.test(action.value) === false){
+          return {...state, errorForm: {...state.errorForm, errorPrice: message.price}}
+        }
+        return {...state, stock: action.value, errorForm: {...state.errorForm, errorStock: ""}};
+
       case "PROVIDER":
         return {...state, provider: action.value};
+        
       case "ERROR":
         return {...state, errorForm: action.value};
       default: 
