@@ -3,6 +3,7 @@ import TextField from '@mui/material/TextField/TextField';
 import { InputLabel } from '@mui/material';
 import Stack from '@mui/material/Stack';
 const TextFieldComponent = styled(TextField)(({theme}) => ({
+    width: "60vw",
     [theme.breakpoints.up("md")]:{
       width: "40vw"
     
@@ -22,13 +23,16 @@ function NormalField({value, forLabelId =`unknow${Math.random(0,100).toFixed(3)}
             direction="column"
             sx={{
                 height: "80px",
+                margin: "0",
             }}
         >
             <InputLabel
               id={forLabelId}
               sx={{
                     color: "#f00",
-                    height: "20px",
+                    height: "16px",
+                    fontSize: "14px",
+                    marginBottom: "2px"
                 }}
             >
                 {errorTest  ? errorText : null }

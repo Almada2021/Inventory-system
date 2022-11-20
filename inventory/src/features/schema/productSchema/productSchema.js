@@ -15,6 +15,7 @@ export const productsInitialFields = {
 const message = {
   name: "you need 4 letters",
   price: "you need a price",
+  stock: "you need a stock positive number"
 }
 const priceRegex = /^(.*?)[0-9]/;
 const letters = /^(.*?)[aA-zZ]/
@@ -36,6 +37,9 @@ export const productsReducer = (state,action) =>{
         if(action.value === ""){
           return {...state, price: action.value, errorForm: {...state.errorForm, errorPrice: ""}};          
         }
+        if(action.value <= 0){
+          return {...state, price: action.value, errorForm: {...state.errorForm, errorPrice: message.price}}
+        }
         if(letters.test(action.value) === true){
           return {...state}
         }
@@ -46,10 +50,13 @@ export const productsReducer = (state,action) =>{
 
       case "STOCK":
         if(action.value === ""){
-          return {...state, price: action.value, errorForm: {...state.errorForm, errorPrice: ""}};          
+          return {...state, stock: action.value, errorForm: {...state.errorForm, errorPrice: ""}};          
         }
         if(letters.test(action.value) === true){
           return {...state}
+        }
+        if(action.value <= 0){
+          return {...state, stock: action.value, errorForm: {...state.errorForm, errorStock: message.stock}}
         }
         if(priceRegex.test(action.value) === false){
           return {...state, errorForm: {...state.errorForm, errorPrice: message.price}}
