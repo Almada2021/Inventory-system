@@ -52,6 +52,7 @@ function AddProductContent({close}) {
   const [values, dispatch] = useReducer(productsReducer, productsInitialFields)
   const uploadInputRef = useRef(null);
   const { name, description, price, stock, provider, errorForm } = values
+  const {errorName, errorPrice} = errorForm
   const {data, error, isLoading} = useGetUserProvidersQuery(1);
   const [postProduct] =usePostUserProductMutation();
   const [image, setImage] = useState()
@@ -80,7 +81,6 @@ function AddProductContent({close}) {
     }
     
   }
-  console.log(uploadInputRef.current)
   return (
     <Box alignItems="center" display="flex" flexDirection="column"> 
         {uploadInputRef.current !== undefined 
@@ -95,7 +95,7 @@ function AddProductContent({close}) {
           value={name}
           forLabelId="name-field"
           change={(e) => changeReducerFunction(dispatch, e, "NAME")}
-          errorText={errorForm}
+          errorText={errorName}
           placeholder="insert product name"
         />
         
@@ -107,9 +107,11 @@ function AddProductContent({close}) {
           onChange={(e) => changeReducerFunction(dispatch, e, "DESCRIPTION")}
           placeholder="insert product description"
         />
-        <TextFieldComponent 
-          value={price} 
-          onChange={(e) => changeReducerFunction(dispatch, e, "PRICE")}
+        <NormalField 
+          value={price}
+          forLabelId="price-field" 
+          errorText={errorPrice}
+          change={(e) => changeReducerFunction(dispatch, e, "PRICE")}
           placeholder="insert product price"
         />
 
