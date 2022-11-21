@@ -32,14 +32,13 @@ const SubmitButton = styled(Button)(({theme}) => ({
 function AddProductContent({close}) {
   const [values, dispatch] = useReducer(productsReducer, productsInitialFields)
   const uploadInputRef = useRef(null);
-  const { name, description, price, stock, provider, errorForm } = values
+  const { name, description, price, stock, provider, errorForm } = values 
   const {errorName, errorPrice, errorStock} = errorForm
   const {data, error, isLoading} = useGetUserProvidersQuery(1);
   const [postProduct] = usePostUserProductMutation();
   const [image, setImage] = useState()
+  console.log(values)
   const previewImg = (event) => {
-    console.log(event.target.files)
-    console.log(image)
     if (event.target.files && event.target.files[0]) {
         setImage( URL.createObjectURL(event.target.files[0]))
         return uploadInputRef.current = URL.createObjectURL(event.target.files[0])

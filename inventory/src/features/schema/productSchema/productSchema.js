@@ -68,6 +68,8 @@ export const productsReducer = (state,action) =>{
         
       case "ERROR":
         return {...state, errorForm: action.value};
+      // case "PRODUCT":
+      //   return {...action.value, errorForm: {...state.errorForm}}
       default: 
         return state;
     }

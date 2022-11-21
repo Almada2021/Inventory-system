@@ -14,7 +14,6 @@ function Products() {
   const closeAddProductModal = () => setAddProductModal(false);
   const {data, error, isLoading}= useGetUserProductsQuery(2)
   const products = data
-
   const canLoad = [
     typeof error == 'undefined', 
     isLoading !== true,
