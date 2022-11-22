@@ -5,27 +5,50 @@ import ProviderCard from '../../components/Provider/Provider';
 import { ListContainer } from '../../components/ListContainer/ListContainer';
 import WrongList from "../../components/WrongList/WrongList"
 import Pagination from '../../components/Pagination/Pagination';
+import NavProductsSection from '../../components/NavProductsSection/NavProductsSection';
+import useToggle from "../../hooks/useToggle/useToggle";
+import BigModal from '../../components/BigModal/BigModal';
+import CrossButton from '../../components/buttons/CrossButton/CrossButton';
 function Providers() {
-    const [ addProductModal, setAddProductModal] = useState(false)
-    const closeAddProductModal = () => setAddProductModal(false);
+    const [modal, changeModal] = useToggle()
     const {data, error, isLoading}= useGetUserProvidersQuery(1)
-
+    const providers = data
+    const canLoad = [
+        typeof error == 'undefined', 
+        isLoading !== true,
+        providers?.length > 0,
+    ].every(Boolean)
     return (
+        <>
         <GeneralPage>
-            
-            {data?.length > 0 
+            <NavProductsSection modal={modal} setModal={changeModal}/>
+            <BigModal 
+                open={modal} 
+                onclose={changeModal} 
+                closeBtn={
+                    <CrossButton
+                        size="medium"
+                        direction="row-reverse"
+                        click={changeModal}
+                    />
+                }
+                content={null}
+            />
+            {canLoad
                 ?
-                <ListContainer lenght={data.lenght}>
+                <ListContainer lenght={providers?.lenght}>
                 {
-                    data.map( (provider) => (
+                    providers.map((provider) => (
                         <ProviderCard provider={provider}/> 
                     ))
                 }  
-                    <Pagination length={Math.ceil(data.length / 9)}/> 
                 </ListContainer>
                 : <WrongList isLoading={isLoading} error={error}/>
             } 
         </GeneralPage>
+        <Pagination length={Math.ceil(providers ? providers?.length / 9 : 1 / 9)}/> 
+        </>
+
     )
 }
 

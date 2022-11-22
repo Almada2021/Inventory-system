@@ -4,6 +4,7 @@ import CustomCircularProgress from '../CustomCircularProgress/CustomCircularProg
 
 function WrongList({isLoading, error}) {
   const load = [isLoading, !error].every(Boolean);
+  console.log(error)
   return (
     <Box>
       {
@@ -11,7 +12,7 @@ function WrongList({isLoading, error}) {
         ?
         <CustomCircularProgress/>
         :
-        <p>{error}</p>
+        <p>error</p>
       }
     </Box>
   )
