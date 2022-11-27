@@ -6,7 +6,7 @@ export const ListContainer =styled(Box)( ( {theme} ) => {
         display:"flex",
         flexWrap: "wrap",
         width:"82vw",
-        minHeight: "60vh",
+        minHeight: "50vh",
         overflow: "hidden",
         justifyContent: "center",
         [theme.breakpoints.between('sm','lg')]: {

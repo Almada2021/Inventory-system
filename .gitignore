@@ -1,2 +1,2 @@
-./inventory/node_modules
-./serverPS/node_modules
+inventory/**/node_modules/
+serverPS/**/node_modules/

@@ -4,7 +4,7 @@ import NavProductsSection from '../../components/NavProductsSection/NavProductsS
 import BigModal from '../../components/BigModal/BigModal';
 import CrossButton from '../../components/buttons/CrossButton/CrossButton';
 import { useGetUserProductsQuery } from '../../app/api/apiSlice';
-import AddProductContent from '../../components/AddProductContent/AddProductContent';
+import AddProductContent from '../../modalsPages/AddProductContent/AddProductContent';
 import useToggle from '../../hooks/useToggle/useToggle';
 import ConditionalList from '../../components/ConditionalList/ConditionalList';
 function Products() {

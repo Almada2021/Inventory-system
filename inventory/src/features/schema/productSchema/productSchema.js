@@ -11,17 +11,17 @@ export const productsInitialFields = {
       errorStock: "",
       provider: "",
     },
-}
+};
 const message = {
   name: "you need 4 letters",
   price: "you need a price",
   stock: "you need a stock positive number"
-}
+};
 const priceRegex = /^(.*?)[0-9]/;
-const letters = /^(.*?)[aA-zZ]/
+const letters = /^(.*?)[aA-zZ]/;
 export const productsReducer = (state,action) =>{
     if (action.value === undefined){
-      return state
+      return state;
     }
     switch(action.type){
       case "NAME":
@@ -32,7 +32,7 @@ export const productsReducer = (state,action) =>{
 
       case "DESCRIPTION":
         return {...state, description: action.value};
-      
+
       case "PRICE":
         if(action.value === ""){
           return {...state, price: action.value, errorForm: {...state.errorForm, errorPrice: ""}};          
@@ -41,10 +41,10 @@ export const productsReducer = (state,action) =>{
           return {...state, price: action.value, errorForm: {...state.errorForm, errorPrice: message.price}}
         }
         if(letters.test(action.value) === true){
-          return {...state}
+          return {...state};
         }
         if(priceRegex.test(action.value) === false){
-          return {...state, errorForm: {...state.errorForm, errorPrice: message.price}}
+          return {...state, errorForm: {...state.errorForm, errorPrice: message.price}};
         }
         return {...state, price: action.value, errorForm: {...state.errorForm, errorPrice: ""}};
 
@@ -53,13 +53,13 @@ export const productsReducer = (state,action) =>{
           return {...state, stock: action.value, errorForm: {...state.errorForm, errorPrice: ""}};          
         }
         if(letters.test(action.value) === true){
-          return {...state}
+          return {...state};
         }
         if(action.value <= 0){
-          return {...state, stock: action.value, errorForm: {...state.errorForm, errorStock: message.stock}}
+          return {...state, stock: action.value, errorForm: {...state.errorForm, errorStock: message.stock}};
         }
         if(priceRegex.test(action.value) === false){
-          return {...state, errorForm: {...state.errorForm, errorPrice: message.price}}
+          return {...state, errorForm: {...state.errorForm, errorPrice: message.price}};
         }
         return {...state, stock: action.value, errorForm: {...state.errorForm, errorStock: ""}};
 
@@ -68,9 +68,9 @@ export const productsReducer = (state,action) =>{
         
       case "ERROR":
         return {...state, errorForm: action.value};
-      // case "PRODUCT":
-      //   return {...action.value, errorForm: {...state.errorForm}}
+  
       default: 
         return state;
+    
     }
-}
+};

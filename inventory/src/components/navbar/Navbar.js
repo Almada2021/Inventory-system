@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {useSelector} from "react-redux";
 import { styled } from '@mui/material/styles';
 import {  useNavigate, NavLink } from "react-router-dom";
@@ -45,8 +45,8 @@ function Navbar() {
             <WidgetsIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}/>
             <Typography
               onClick={(e) => { 
-                console.log("hello")
-                navigate("/")
+                e.preventDefault();
+                navigate("/");
 
               }}
               variant="h6"

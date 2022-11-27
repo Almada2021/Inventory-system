@@ -1,9 +1,8 @@
-import {useState} from 'react'
 import { styled } from '@mui/material/styles';
 import { Typography } from '@mui/material';
-import Stack from '@mui/material/Stack';
-import {Link} from "react-router-dom";
 import {useCustomTheme} from "../../hooks/useCustomTheme/useCustomTheme";
+import Stack from '@mui/material/Stack';
+import useToggle from '../../hooks/useToggle/useToggle';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import ClearIcon from '@mui/icons-material/Clear';
 import IconButton from '@mui/material/IconButton';
@@ -12,52 +11,19 @@ import CrossButton from '../buttons/CrossButton/CrossButton';
 import WarningModal from '../WarningModal/WarningModal';
 import BigModal from '../BigModal/BigModal';
 import EditProduct from '../../modalsPages/EditProduct/EditProduct';
+import { LinkCardComponent } from '../cards/LinkCardComponent/LinkCardComponent';
 import {  useDeleteUserProductMutation } from '../../app/api/apiSlice';
-const Background = styled("div")( ( {theme } ) => ({
-    backgroundColor: theme.palette.primary.background,
-    borderRadius: "10px",
-    boxSizing: "border-box",
-    padding: "15px",
-    overflow: "hidden",
-    color: "#000",
-    display: "flex",
-    margin: "10px",
-    wrap: "wrap",
-    minHeight: "150px",
-    maxHeight: "500px",
-    width: "80vw",
-    [theme.breakpoints.up('md')]: {
-        width: "340px",
-        
-    },
-    [theme.breakpoints.between('md', 'lg')]: {
-        width: "30vw",
-    }
-
-}));
-
-const ProductLink = styled(Link)( ({ theme }) => ({
-    alignItems: "center",
-    color: "inherit",
-    gap: "8px",
-    display: "flex",
-    textDecoration: "none",
-}));
-
+import { Background } from '../cards/Background/Background';
 function ProviderCard({provider = null}) {
     const {id, name, phone } = provider;
-    const [formModal, setFormModal] = useState(false);
-    const [deleteModal, setDeleteModal] = useState(false);
-    const openFormModal = () => setFormModal(true);
-    const closeFormModal = () => setFormModal(false);
-    const openDeleteModal = () => setDeleteModal(true);
-    const closeDeleteModal = () => setDeleteModal(false);
+    const [formModal, setFormModal] = useToggle();
+    const [deleteModal, setDeleteModal] = useToggle();
     const selected = useCustomTheme("primary","third");
     const [deleteProductQuery] = useDeleteUserProductMutation()
     const deleteProduct = async() => {
         try {
             await deleteProductQuery(id)
-            closeDeleteModal();
+            setDeleteModal();
             return true
 
         } catch (err) {
@@ -74,16 +40,16 @@ function ProviderCard({provider = null}) {
                  <div style={{width:"60%"}}>
                         <Typography  variant="h4" fontStyle="revert" fontWeight="500" color={selected} >
                             <Stack direction="row" alignItems="center" gap="6px" padding="3px">
-                                <IconButton title='edit product' size="small" onClick={openFormModal}  sx={{borderRadius: "2px",backgrounColor: "#fff", outline: `1px solid ${selected}`, height: "30px", display: "flex", alignItems: "center", justifyContent:"center"}}>
+                                <IconButton title='edit product' size="small" onClick={setFormModal}  sx={{borderRadius: "2px",backgrounColor: "#fff", outline: `1px solid ${selected}`, height: "30px", display: "flex", alignItems: "center", justifyContent:"center"}}>
                                     <ModeEditOutlineIcon sx={{color: selected}}/>
                                 </IconButton>
-                                <IconButton title='delete product' size="small" onClick={openDeleteModal} sx={{borderRadius: "2px",backgrounColor: "#fff", outline: `1px solid ${selected}`, height: "30px", display: "flex", alignItems: "center", justifyContent:"center"}}>
+                                <IconButton title='delete product' size="small" onClick={setDeleteModal} sx={{borderRadius: "2px",backgrounColor: "#fff", outline: `1px solid ${selected}`, height: "30px", display: "flex", alignItems: "center", justifyContent:"center"}}>
                                     <ClearIcon sx={{color: selected}}/>
                                 </IconButton>
-                                <ProductLink to={`./${id}`}>
+                                <LinkCardComponent to={`./${id}`}>
                                     {name.substring(0,4)}
                                     {name.length > 8 ? "..." : null}
-                                </ProductLink>
+                                </LinkCardComponent>
                             </Stack>
                         </Typography>
                         <Stack sx={{minHeight: "80px", maxHeight: "100px"}}>
@@ -98,8 +64,8 @@ function ProviderCard({provider = null}) {
                     />
                     <BigModal
                         open={formModal}
-                        onclose={closeFormModal}
-                        closeBtn={<CrossButton size="large" direction="row-reverse" click={closeFormModal}/>}
+                        onclose={setFormModal}
+                        closeBtn={<CrossButton size="large" direction="row-reverse" click={setFormModal}/>}
                         content={<EditProduct product={provider}/>}
                     />
 
@@ -107,7 +73,7 @@ function ProviderCard({provider = null}) {
                         stateModal={deleteModal}
                         question={`Are you sure do you want delete ${name}?`}
                         clickAcept={deleteProduct}
-                        clickReject={closeDeleteModal}
+                        clickReject={setDeleteModal}
                     />
                 </Background>
             }

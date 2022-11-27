@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {GeneralPage} from "../../components/GeneralPage/GeneralPage";
 import { useGetUserProvidersQuery } from '../../app/api/apiSlice';
 import ProviderCard from '../../components/Provider/Provider';
@@ -9,6 +8,7 @@ import NavProductsSection from '../../components/NavProductsSection/NavProductsS
 import useToggle from "../../hooks/useToggle/useToggle";
 import BigModal from '../../components/BigModal/BigModal';
 import CrossButton from '../../components/buttons/CrossButton/CrossButton';
+import AddProviderContent from "../../modalsPages/AddProviderContent/AddProviderContent";
 function Providers() {
     const [modal, changeModal] = useToggle()
     const {data, error, isLoading}= useGetUserProvidersQuery(1)
@@ -20,33 +20,33 @@ function Providers() {
     ].every(Boolean)
     return (
         <>
-        <GeneralPage>
-            <NavProductsSection modal={modal} setModal={changeModal}/>
-            <BigModal 
-                open={modal} 
-                onclose={changeModal} 
-                closeBtn={
-                    <CrossButton
-                        size="medium"
-                        direction="row-reverse"
-                        click={changeModal}
-                    />
-                }
-                content={null}
-            />
-            {canLoad
-                ?
-                <ListContainer lenght={providers?.lenght}>
-                {
-                    providers.map((provider) => (
-                        <ProviderCard provider={provider}/> 
-                    ))
-                }  
-                </ListContainer>
-                : <WrongList isLoading={isLoading} error={error}/>
-            } 
-        </GeneralPage>
-        <Pagination length={Math.ceil(providers ? providers?.length / 9 : 1 / 9)}/> 
+            <GeneralPage>
+                <NavProductsSection modal={modal} setModal={changeModal}/>
+                <BigModal 
+                    open={modal} 
+                    onclose={changeModal} 
+                    closeBtn={
+                        <CrossButton
+                            size="medium"
+                            direction="row-reverse"
+                            click={changeModal}
+                        />
+                    }
+                    content={<AddProviderContent close={changeModal}/>}
+                />
+                {canLoad
+                    ?
+                    <ListContainer lenght={providers?.lenght}>
+                    {
+                        providers.map((provider) => (
+                            <ProviderCard provider={provider}/> 
+                        ))
+                    }  
+                    </ListContainer>
+                    : <WrongList isLoading={isLoading} error={error}/>
+                } 
+            </GeneralPage>
+            <Pagination length={Math.ceil(providers ? providers?.length / 9 : 1 / 9)}/> 
         </>
 
     )
