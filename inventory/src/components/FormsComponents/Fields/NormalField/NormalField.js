@@ -12,7 +12,7 @@ const TextFieldComponent = styled(TextField)(({theme}) => ({
       width: "30vw"
     }
 }));
-function NormalField({value, forLabelId =`unknow${Math.random(0,100).toFixed(3)}`, errorText, change, placeholder = "", typeInput = "text"}) {
+function NormalField({value, forLabelId =`unknow${Math.random(0,100).toFixed(3)}`, errorText = false, change, placeholder = "", typeInput = "text"}) {
     const errorTest = [
         errorText !== "",
         errorText !== undefined,

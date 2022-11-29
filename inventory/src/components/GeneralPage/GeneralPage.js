@@ -13,6 +13,7 @@ export const GeneralPage = styled("div")(({theme}) =>({
   [theme.breakpoints.down("md")]:{
     minHeight: "150vh",
     maxHeight: "350vh",
-    paddingTop: "10px"
+    paddingTop: "10px",
+    justifyContent: "start",
   }
 }))

@@ -8,7 +8,7 @@ import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { ButtonsGroupSubmit } from '../../components/FormsComponents/ButtonsGroup/ButtonsGroup';
 import { useGetUserProvidersQuery, usePostUserProductMutation } from '../../app/api/apiSlice';
 import NormalField from '../../components/FormsComponents/Fields/NormalField/NormalField';
-
+import useChangeImg from '../../hooks/useChangeImg/useChangeImg';
 function AddProductContent({close}) {
   const [values, dispatch] = useReducer(productsReducer, productsInitialFields)
   const uploadInputRef = useRef(null);
@@ -16,19 +16,14 @@ function AddProductContent({close}) {
   const {errorName, errorPrice, errorStock} = errorForm
   const {data, error, isLoading} = useGetUserProvidersQuery(1);
   const [postProduct] = usePostUserProductMutation();
-  const [image, setImage] = useState()
-  const previewImg = (event) => {
-    if (event.target.files && event.target.files[0]) {
-        setImage( URL.createObjectURL(event.target.files[0]))
-        return uploadInputRef.current = URL.createObjectURL(event.target.files[0])
-      }
-  }
+  const [img, setImg] = useChangeImg(uploadInputRef)
+
   return (
     <Box alignItems="center" display="flex" flexDirection="column"> 
         {uploadInputRef.current !== undefined 
           ? 
           <Box width="60vw" marginBottom="5px" height="150px" overflow="hidden" color="#fff">
-            <img src={image} style={{objectFit: "cover", width: "inherit", height: "inherit"}}></img> 
+            <img src={img} style={{objectFit: "cover", width: "inherit", height: "inherit"}}></img> 
           </Box>
           : null
         }
@@ -89,7 +84,7 @@ function AddProductContent({close}) {
         </Box>
         <ButtonsGroupSubmit
           objRef={uploadInputRef}
-          previewImg={previewImg}
+          previewImg={setImg}
         />
       </FormContainer>
     </Box>

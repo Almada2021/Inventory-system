@@ -12,7 +12,7 @@ function ConditionalList({items, isLoading, canLoad, error}) {
             <ListContainer length={items?.length}>
                 {
                   items.map(product => (
-                    <Product key={product.id} product={product} />
+                    <Product key={product.id ? product.id : `${Math.random}${product.name}`} product={product} />
                     ))
                 }
             </ListContainer>

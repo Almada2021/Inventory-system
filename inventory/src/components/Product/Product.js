@@ -35,7 +35,7 @@ function Product({product = null}) {
                 !product 
                 ? null 
                 :  
-                <Background title={`${product.name}`}>
+                <Background title={`${product.name}`} >
                  <div style={{width:"60%"}}>
                         <Typography  variant="h4" fontStyle="revert" fontWeight="500" color={selected} >
                             <Stack direction="row" alignItems="center" gap="6px" padding="3px">

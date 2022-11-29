@@ -13,11 +13,15 @@ export const Background = styled("div")( ( {theme } ) => ({
     minHeight: "150px",
     maxHeight: "200px",
     width: "80vw",
-    [theme.breakpoints.up('md')]: {
-        width: "340px",
-    },
     [theme.breakpoints.between('md', 'lg')]: {
-        width: "30vw",
+        width: "310px",
+    },
+    [theme.breakpoints.up('lg')]:{
+        minWidth: "290px",
+        maxWidth: "340px",
     }
+    // [theme.breakpoints.between('md', 'lg')]: {
+    //     width: "30vw",
+    // }
 
 }));

@@ -39,7 +39,7 @@ function Providers() {
                     <ListContainer lenght={providers?.lenght}>
                     {
                         providers.map((provider) => (
-                            <ProviderCard provider={provider}/> 
+                            <ProviderCard key={provider?.id} provider={provider}/> 
                         ))
                     }  
                     </ListContainer>
