@@ -26,15 +26,23 @@ export const apiSlice = createApi({
         }),
         //providers
         getUserProviders: builder.query({
-          query: (id) => `get/providers/${id}`,
+          query: (id) => `/get/providers/${id}`,
           providesTags: ['providers']          
-
-        })
+        }),
+        postUserProvider: builder.mutation({
+          query: (value) => ({
+            url: '/add/providers',
+            method: 'POST',
+            body: value,
+          }),
+          invalidatesTags: ['providers']
+        }),
     }),
 })
 export const { 
   useGetUserProductsQuery, 
   useDeleteUserProductMutation,
   useGetUserProvidersQuery,
-  usePostUserProductMutation
+  usePostUserProductMutation,
+  usePostUserProviderMutation,
 } = apiSlice

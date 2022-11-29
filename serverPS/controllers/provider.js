@@ -2,20 +2,17 @@ import { dbObject } from "../database/connection.database.js";
 import { ADD_PROVIDER, DELETE_PROVIDER, ALL_PROVIDERS_USER } from "../Query/index.js";
 
 export const addProvider = async (req,res) =>{
-    const {
-        name,
-        phone,
-        created_by
-    } = req.body;
-    let message = "";
     try {
-        const createProvider = dbObject(ADD_PROVIDER, [name, phone, created_by])
-        
+        const {name, phone, created_by} = req.body
+        const createProvider = await dbObject(ADD_PROVIDER, [String(name), String(phone), created_by])
+        if (!createProvider){
+            throw new Error("don't work")
+        }
     } catch (err) {
-        console.log(err)
-    }
-    finally{
-        return res.json()
+        console.log("error")
+        return res.json("something wrong with database")
+    }finally{
+        return res.json("provider created")
     }
 };
 

@@ -1,9 +1,9 @@
 import { Box } from '@mui/material'
-import React from 'react'
 import CustomCircularProgress from '../CustomCircularProgress/CustomCircularProgress';
 
 function WrongList({isLoading, error}) {
   const load = [isLoading, !error].every(Boolean);
+  console.log(error)
   return (
     <Box>
       {
@@ -11,7 +11,7 @@ function WrongList({isLoading, error}) {
         ?
         <CustomCircularProgress/>
         :
-        <p>{error}</p>
+        <p>error</p>
       }
     </Box>
   )

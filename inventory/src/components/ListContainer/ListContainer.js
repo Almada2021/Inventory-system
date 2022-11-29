@@ -1,14 +1,13 @@
-import React from 'react'
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
-// style={{display: "flex", flexWrap:"wrap", width: "82vw",justifyContent: "space-between"}}
-export const ListContainer =styled(Box)( ( {theme, length} ) => {
-    console.log(length)
+export const ListContainer =styled(Box)( ( {theme} ) => {
     return({
         display:"flex",
         flexWrap: "wrap",
         width:"82vw",
-        justifyContent: length/3 === 0 ? "center": "start",
+        minHeight: "50vh",
+        overflow: "hidden",
+        justifyContent: "center",
         [theme.breakpoints.between('sm','lg')]: {
             width: "100vw",
             justifyContent: "center",
